@@ -1,6 +1,7 @@
 import { pgTable, uuid, varchar, boolean, json, timestamp, integer } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { nullablePassword } from './utils';
+import { Address, Coordinates } from '@/types/system/location';
 
 export const usersTable = pgTable('users', {
   _id: uuid('id').defaultRandom().primaryKey(),
@@ -44,20 +45,8 @@ export const userCredentialsTableRelations = relations(userCredentialsTable, ({ 
 export const organizationsTable = pgTable('organizations', {
   _id: uuid('id').defaultRandom().primaryKey(),
   name: varchar('name').notNull(),
-  address: json('address')
-    .$type<{
-      street: string;
-      city: string;
-      country: string;
-      zip: string;
-    }>()
-    .notNull(),
-  coordinates: json('coordinates')
-    .$type<{
-      latitude: number;
-      longitude: number;
-    }>()
-    .notNull(),
+  address: json('address').$type<Address>().notNull(),
+  coordinates: json('coordinates').$type<Coordinates>().notNull(),
   createdAt: timestamp('createdAt', { mode: 'string' }).notNull().defaultNow(),
   updatedAt: timestamp('updatedAt', { mode: 'string' }).notNull().defaultNow(),
 });
@@ -142,28 +131,22 @@ export const restaurantsTable = pgTable('restaurants', {
   organizationId: uuid('organizationId')
     .notNull()
     .references(() => organizationsTable._id),
-  address: json('address').$type<{
-    street: string;
-    city: string;
-    country: string;
-    zip: string;
-  }>(),
-  coordinates: json('coordinates').$type<{
-    latitude: number;
-    longitude: number;
-  }>(),
+  address: json('address').$type<Address>(),
+  coordinates: json('coordinates').$type<Coordinates>(),
   priceLevel: integer('priceLevel'),
   openingHours: json('openingHours').$type<string[]>(),
   website: varchar('website'),
   phoneNumber: varchar('phoneNumber'),
   services: json('services').$type<Record<string, boolean>>(),
   types: json('types').$type<string[]>(),
-  photos: json('photos').$type<{
-    reference: string;
-    width: number;
-    height: number;
-    url: string;
-  }>(),
+  photos: json('photos').$type<
+    Array<{
+      reference: string;
+      width: number;
+      height: number;
+      url: string;
+    }>
+  >(),
   disabled: boolean('disabled').default(false).notNull(),
   createdAt: timestamp('createdAt', { mode: 'string' }).notNull().defaultNow(),
   updatedAt: timestamp('updatedAt', { mode: 'string' }).notNull().defaultNow(),

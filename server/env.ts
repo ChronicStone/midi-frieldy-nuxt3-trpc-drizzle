@@ -7,5 +7,6 @@ export const env = createEnv({
     JWT_SECRET_KEY: z.string(),
     JWT_EXPIRATION_TIME: z.union([z.string(), z.number()]),
     CLIENT_APP_URL: z.string().url(),
+    VITE_GOOGLE_API_KEY: z.string(),
   },
 });
