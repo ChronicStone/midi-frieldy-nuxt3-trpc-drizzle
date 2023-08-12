@@ -4,15 +4,16 @@ module.exports = {
     browser: true,
     node: true,
   },
-  parser: "vue-eslint-parser",
+  parser: 'vue-eslint-parser',
   parserOptions: {
-    parser: "@typescript-eslint/parser",
+    parser: '@typescript-eslint/parser',
   },
-  extends: ["@nuxtjs/eslint-config-typescript", "plugin:prettier/recommended"],
+  extends: ['@nuxtjs/eslint-config-typescript', 'plugin:prettier/recommended'],
   plugins: [],
   rules: {
-    "vue/multi-word-component-names": "off",
-    "vue/no-multiple-template-root": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
+    'vue/multi-word-component-names': 'off',
+    'vue/no-multiple-template-root': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
+    'no-async-promise-executor': 'off',
   },
 };
