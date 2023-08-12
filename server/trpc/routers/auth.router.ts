@@ -1,6 +1,7 @@
 import { eq, and } from 'drizzle-orm';
 import { TRPCError } from '@trpc/server';
-import * as jwt from 'jsonwebtoken';
+// eslint-disable-next-line import/default
+import jwt from 'jsonwebtoken';
 import { publicProcedure, router } from '@/server/trpc/trpc';
 import { authLoginDto } from '@/server/dto/auth.dto';
 import { env } from '@/server/env';
@@ -12,6 +13,7 @@ export const authRouter = router({
     const user = await getUserFromCredentials(input);
     if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
 
+    // eslint-disable-next-line import/no-named-as-default-member
     const accessToken = jwt.sign(
       {
         _id: user._id,

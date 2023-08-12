@@ -3,6 +3,7 @@ import { getCoordinatesFromAddress } from '@/server/services/googleMaps.service'
 import { router, protectedProcedure } from '@/server/trpc/trpc';
 import { createOrganizationDto } from '@/server/dto/organization.dto';
 import { organizationsTable } from '@/db/schema';
+import { resolveOrganizationRestaurants } from '@/server/defer/queue/maps.queue';
 
 export const organizationRouter = router({
   getOrganizations: protectedProcedure.query(({ ctx }) => {
@@ -25,6 +26,7 @@ export const organizationRouter = router({
       })
       .returning();
 
+    await resolveOrganizationRestaurants(organization._id);
     return organization;
   }),
 });

@@ -125,7 +125,7 @@ async function finaliseRegisterProcess(data: AuthRegisterDto | AuthLoginDto) {
   <template v-else>
     <div class="flex overflow-hidden">
       <div class="w-0 lg:w-1/2 h-layout illu-container-full"></div>
-      <NScrollbar class="w-full lg:w-1/2" style="max-height: calc(100vh - 4rem)">
+      <NScrollbar class="w-full !lg:w-1/2" style="max-height: calc(100vh - 4rem)">
         <div class="p-16 flex flex-col gap-8">
           <h1 class="font-600 text-lg">
             Lier l'organisation

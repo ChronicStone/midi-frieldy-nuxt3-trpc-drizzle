@@ -79,6 +79,7 @@ export default defineNuxtConfig({
         primary: '#F18669',
       },
     },
+    rules: [['h-layout', { height: 'calc(100vh - 4rem)' }]],
   },
   plugins: [],
 });

@@ -1,7 +1,7 @@
-import type { VNodeChild } from "vue";
-import type { RouteLocationRaw } from "#vue-router";
-import { renderIcon } from "@/utils/render";
-import { NuxtLink } from "#components";
+import type { VNodeChild } from 'vue';
+import type { RouteLocationRaw } from '#vue-router';
+import { renderIcon } from '@/utils/render';
+import { NuxtLink } from '#components';
 
 export interface DropdownAction {
   label: string | (() => VNodeChild);
@@ -23,24 +23,23 @@ export interface MappedDropdownAction {
   };
 }
 
-export function useDropdownActions(actions: DropdownAction[]) {
+export function useDropdownActions(actions: Array<DropdownAction | { type: 'divider' }>) {
   return computed(() =>
     actions
-      .map((action: DropdownAction) => ({
-        label: action.link
-          ? () => <NuxtLink to={action.link}>{action.label}</NuxtLink>
-          : action.label,
-        ...(action.icon && { icon: renderIcon(action.icon) }),
-        disabled:
-          typeof action.disable === "function"
-            ? action.disable()
-            : action?.disable ?? false,
-        hidden:
-          typeof action.condition === "function" ? !action.condition() : false,
-        props: {
-          onClick: () => action?.action?.(),
-        },
-      }))
+      .map((action) => {
+        if ('type' in action) return { type: 'divider', hidden: false, key: generateUUID() };
+        else
+          return {
+            key: generateUUID(),
+            label: action.link ? () => <NuxtLink to={action.link}>{action.label}</NuxtLink> : action.label,
+            ...(action.icon && { icon: renderIcon(action.icon) }),
+            disabled: typeof action.disable === 'function' ? action.disable() : action?.disable ?? false,
+            hidden: typeof action.condition === 'function' ? !action.condition() : false,
+            props: {
+              onClick: () => action?.action?.(),
+            },
+          };
+      })
       .filter((action) => !action.hidden),
   );
 }

@@ -1,35 +1,23 @@
 import { defineStore } from 'pinia';
-import { useStorage as useCStorage } from '@vueuse/core';
+import { useStorage as useCStorage, type Serializer } from '@vueuse/core';
 // import { Organization } from "./../types/organization";
 // import { AuthLoginData } from "@/types/auth";
 import { Organization } from '@/types/organization';
 import { User } from '@/types/user';
 import { AuthLoginData } from '@/types/auth';
-// import { ObjectSerializer } from "@/utils/data/object";
 
 export const useUserStore = defineStore('userStore', () => {
   const refreshToken = ref<string | null>();
   const rememberMe = ref<boolean>(false);
 
-  const organizations = useCStorage<Organization[]>(
-    'organizations',
-    [],
-    localStorage,
-    // { serializer: ObjectSerializer as Serializer<Organization[]> },
-  );
-
+  const organizations = useCStorage<Organization[]>('organizations', [], localStorage, {
+    serializer: serializer as Serializer<Organization[]>,
+  });
   const activeOrganizationId = useCStorage<string | null>('activeOrganizationId', null, localStorage);
-
   const accessToken = useCStorage<string | null>('refreshToken', null, localStorage);
-
-  const user = useCStorage<User | null>(
-    'user',
-    null,
-    localStorage,
-    // {
-    //   serializer: ObjectSerializer as Serializer<User & { onboarded: boolean }>,
-    // },
-  );
+  const user = useCStorage<User | null>('user', null, localStorage, {
+    serializer: serializer as Serializer<User>,
+  });
 
   const activeOrganization = computed<Organization | null>(() =>
     user.value ? organizations.value.find((orga) => orga._id === activeOrganizationId.value) ?? null : null,

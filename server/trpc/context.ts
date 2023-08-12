@@ -1,7 +1,9 @@
+/* eslint-disable import/default */
+/* eslint-disable import/no-named-as-default-member */
 import { TRPCError, inferAsyncReturnType } from '@trpc/server';
 import { type H3Event, getHeader } from 'h3';
 import { eq } from 'drizzle-orm';
-import * as jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { db } from '@/db';
 import { env } from '@/server/env';
 import { jwtSafeParse } from '@/utils/server/jwt';
@@ -12,7 +14,7 @@ import { userDto } from '@/server/dto/user.dto';
  * @link https://trpc.io/docs/context
  */
 export const createContext = async (_event: H3Event) => {
-  const authToken = getHeader(_event, 'authorization');
+  const authToken = (getHeader(_event, 'authorization') ?? '').split(' ')[1];
   // const organizationId = getHeader(_event, "organizationId");
 
   const valid = authToken ? jwt.verify(authToken, env.JWT_SECRET_KEY) : true;

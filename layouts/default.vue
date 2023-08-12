@@ -24,7 +24,7 @@ watch(
       }"
     >
       <slot />
-      <AppFooter />
+      <!-- <AppFooter /> -->
     </n-layout-content>
   </n-layout>
 </template>

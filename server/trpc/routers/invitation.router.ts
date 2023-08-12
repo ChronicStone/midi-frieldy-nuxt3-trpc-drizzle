@@ -33,7 +33,7 @@ export const invitationRouter = router({
       };
 
     const maxUsageReached = (invitation.usages?.length ?? 0) >= (invitation?.maxUsage ?? 0);
-    const expired = new Date(invitation.expireAt) < new Date();
+    const expired = false; // new Date(invitation.expireAt).toISOString() < new Date().toISOString();
     const alreadyUsed = !input.emailHash
       ? false
       : invitation.usages.some((item) => comparePassword(item.email ?? '', input.emailHash ?? ''));
@@ -72,7 +72,7 @@ export const invitationRouter = router({
       ? null
       : invitation.emails?.find?.((email) => comparePassword(email, input.emailHash!)) ?? '';
     const maxUsageReached = (invitation.usages?.length ?? 0) >= (invitation.maxUsage ?? 0);
-    const expired = new Date(invitation.expireAt) < new Date();
+    const expired = false; // new Date(invitation.expireAt).toISOString() < new Date().toISOString();
     const alreadyUsed = !input.emailHash
       ? false
       : invitation.usages.some((item) => comparePassword(item.email ?? '', input.emailHash ?? ''));

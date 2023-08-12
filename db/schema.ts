@@ -1,7 +1,9 @@
 import { pgTable, uuid, varchar, boolean, json, timestamp, integer } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
+import { z } from 'zod';
 import { nullablePassword } from './utils';
 import { Address, Coordinates } from '@/types/system/location';
+import { queueJobParamsSchema, queueJobResultSchema } from '@/server/dto/queueJob.dto';
 
 export const usersTable = pgTable('users', {
   _id: uuid('id').defaultRandom().primaryKey(),
@@ -288,18 +290,6 @@ export const lunchGroupPollsTable = pgTable('lunch_group_polls', {
   updatedAt: timestamp('updatedAt', { mode: 'string' }).notNull().defaultNow(),
 });
 
-export const lunchGroupPollsRestaurantsTable = pgTable('lunch_group_polls_restaurants', {
-  _id: uuid('id').primaryKey().defaultRandom(),
-  lunchGroupPollId: uuid('lunchGroupPollId')
-    .notNull()
-    .references(() => lunchGroupPollsTable._id),
-  restaurantId: uuid('restaurantId')
-    .notNull()
-    .references(() => restaurantsTable._id),
-  createdAt: timestamp('createdAt', { mode: 'string' }).notNull().defaultNow(),
-  updatedAt: timestamp('updatedAt', { mode: 'string' }).notNull().defaultNow(),
-});
-
 export const lunchGroupPollsTableRelations = relations(lunchGroupPollsTable, ({ one, many }) => ({
   organization: one(organizationsTable, {
     fields: [lunchGroupPollsTable.organizationId],
@@ -315,6 +305,32 @@ export const lunchGroupPollsTableRelations = relations(lunchGroupPollsTable, ({ 
   }),
   restaurants: many(lunchGroupPollsRestaurantsTable),
 }));
+
+export const lunchGroupPollsRestaurantsTable = pgTable('lunch_group_polls_restaurants', {
+  _id: uuid('id').primaryKey().defaultRandom(),
+  lunchGroupPollId: uuid('lunchGroupPollId')
+    .notNull()
+    .references(() => lunchGroupPollsTable._id),
+  restaurantId: uuid('restaurantId')
+    .notNull()
+    .references(() => restaurantsTable._id),
+  createdAt: timestamp('createdAt', { mode: 'string' }).notNull().defaultNow(),
+  updatedAt: timestamp('updatedAt', { mode: 'string' }).notNull().defaultNow(),
+});
+
+export const lunchGroupPollsRestaurantsTableRelations = relations(
+  lunchGroupPollsRestaurantsTable,
+  ({ one }) => ({
+    lunchGroupPoll: one(lunchGroupPollsTable, {
+      fields: [lunchGroupPollsRestaurantsTable.lunchGroupPollId],
+      references: [lunchGroupPollsTable._id],
+    }),
+    restaurant: one(restaurantsTable, {
+      fields: [lunchGroupPollsRestaurantsTable.restaurantId],
+      references: [restaurantsTable._id],
+    }),
+  }),
+);
 
 export const lunchGroupPollEntriesTable = pgTable('lunch_group_poll_entries', {
   _id: uuid('id').primaryKey().defaultRandom(),
@@ -345,3 +361,15 @@ export const lunchGroupPollEntriesTableRelations = relations(lunchGroupPollEntri
     references: [restaurantsTable._id],
   }),
 }));
+
+export const queueJobsTable = pgTable('queue_jobs', {
+  _id: uuid('id').primaryKey().defaultRandom(),
+  queue: varchar('queue').notNull().$type<'map' | 'email'>(),
+  params: json('params').$type<z.infer<typeof queueJobParamsSchema>>().notNull(),
+  result: json('result').$type<z.infer<typeof queueJobResultSchema>>(),
+  status: varchar('status', { length: 20 })
+    .notNull()
+    .$type<'pending' | 'processing' | 'completed' | 'failed'>()
+    .default('pending'),
+  attempts: integer('attempts').notNull().default(0),
+});

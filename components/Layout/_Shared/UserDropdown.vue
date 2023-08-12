@@ -6,15 +6,23 @@ const dropdownOptions = useDropdownActions([
   {
     label: "Changer d'organisation",
     icon: 'mi:switch',
-    action: () => navigateTo('/settings/select-organization'),
+    action: () => navigateTo('/map/select-organization'),
   },
   {
     label: 'Se déconnecter',
     icon: 'ph:sign-out-bold',
     action: () => {
-      //   userStore.clearUserSession();
+      userStore.clearUserSession();
       navigateTo('/auth/login');
     },
+  },
+  {
+    type: 'divider',
+  },
+  {
+    label: 'Administration',
+    icon: 'ph:gear-six-bold',
+    action: () => navigateTo('/admin'),
   },
 ]);
 </script>

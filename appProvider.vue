@@ -20,7 +20,7 @@ nuxtApp.provide('messageApi', messageApi);
 nuxtApp.provide('notificationApi', notificationApi);
 nuxtApp.provide('themeVars', themeVars);
 
-const layout = computed(() => (route.name.startsWith('admin') ? 'admin' : 'default'));
+const layout = computed(() => (route.path.startsWith('/admin') ? 'admin' : 'default'));
 </script>
 
 <template>

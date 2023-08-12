@@ -15,3 +15,14 @@ export function omit<T extends object, K extends keyof T, R extends Omit<T, K>>(
   }
   return result;
 }
+
+export const serializer = {
+  read: (string: string) => {
+    try {
+      return JSON.parse(string);
+    } catch (err) {
+      return string;
+    }
+  },
+  write: (value: Record<string, any> | null) => (value ? JSON.stringify(value) : value),
+};

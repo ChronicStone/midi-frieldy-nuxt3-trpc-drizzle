@@ -11,6 +11,7 @@ declare module 'vue' {
     'I:icBaselineDarkMode': typeof import('~icons/ic/baseline-dark-mode')['default']
     'I:logos:googleIcon': typeof import('~icons/logos/google-icon')['default']
     'I:mdi:chevronRight': typeof import('~icons/mdi/chevron-right')['default']
+    'I:mdi:officeBuilding': typeof import('~icons/mdi/office-building')['default']
     'I:mdiWhiteBalanceSunny': typeof import('~icons/mdi/white-balance-sunny')['default']
     'I:phLockDuotone': typeof import('~icons/ph/lock-duotone')['default']
     'I:phLockKeyOpenDuotone': typeof import('~icons/ph/lock-key-open-duotone')['default']
