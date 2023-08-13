@@ -115,7 +115,7 @@ export const invitationRouter = router({
             linkedAccount: {
               columns: { _id: true, firstName: true, lastName: true },
               with: {
-                credentials: { columns: { _id: true, email: true } },
+                credentials: { columns: { _id: true, email: true, type: true } },
               },
             },
           },

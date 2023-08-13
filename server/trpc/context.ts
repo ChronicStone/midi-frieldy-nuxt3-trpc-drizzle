@@ -22,7 +22,6 @@ export const createContext = async (_event: H3Event) => {
   if (!valid) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid jwt token' });
 
   const decoded = jwtSafeParse(authToken ?? '', authTokenPayloadDto);
-
   const user = decoded
     ? await db.query.usersTable.findFirst({
         where: (user) => eq(user._id, decoded._id),
