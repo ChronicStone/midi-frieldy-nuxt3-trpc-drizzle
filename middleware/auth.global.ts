@@ -1,6 +1,9 @@
 import JwtDecode from 'jwt-decode';
 
 export default defineNuxtRouteMiddleware((to) => {
+  const authEnabled = !!(to?.meta?.auth ?? to.path.startsWith('/admin'));
+  if (!authEnabled) return;
+
   const userStore = useUserStore();
   if (!userStore.user) return navigateTo('/auth/login');
 

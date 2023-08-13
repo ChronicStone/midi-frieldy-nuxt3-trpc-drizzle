@@ -8,10 +8,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     'I:charm:menuHamburger': typeof import('~icons/charm/menu-hamburger')['default']
+    'I:ciHamburger': typeof import('~icons/ci/hamburger')['default']
     'I:icBaselineDarkMode': typeof import('~icons/ic/baseline-dark-mode')['default']
     'I:logos:googleIcon': typeof import('~icons/logos/google-icon')['default']
     'I:mdi:chevronRight': typeof import('~icons/mdi/chevron-right')['default']
+    'I:mdi:close': typeof import('~icons/mdi/close')['default']
     'I:mdi:officeBuilding': typeof import('~icons/mdi/office-building')['default']
+    'I:mdi:user': typeof import('~icons/mdi/user')['default']
     'I:mdiWhiteBalanceSunny': typeof import('~icons/mdi/white-balance-sunny')['default']
     'I:phLockDuotone': typeof import('~icons/ph/lock-duotone')['default']
     'I:phLockKeyOpenDuotone': typeof import('~icons/ph/lock-key-open-duotone')['default']

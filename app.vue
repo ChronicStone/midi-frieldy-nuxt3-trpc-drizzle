@@ -2,7 +2,6 @@
 import { FormProvider } from '@chronicstone/vue-sweettools';
 import '@chronicstone/vue-sweettools/dist/style.css';
 import AppProvider from './appProvider.vue';
-
 const appStore = useAppStore();
 
 watch(

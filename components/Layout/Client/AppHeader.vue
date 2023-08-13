@@ -1,4 +1,13 @@
 <script setup lang="ts">
+const { collapsed } = defineModels<{ collapsed: boolean }>();
+const props = withDefaults(
+  defineProps<{
+    showLogo?: boolean;
+    showMenuHandle?: boolean;
+  }>(),
+  { showLogo: true },
+);
+
 const userStore = useUserStore();
 const appStore = useAppStore();
 const route = useRoute();
@@ -8,13 +17,14 @@ const showLogin = computed(() => {
 </script>
 
 <template>
-  <n-el
-    class="bg-[var(--body-color)] border-b border-[var(--border-color)] h-16 w-full flex items-center justify-between p-2"
-  >
-    <NuxtLink to="/">
-      <img v-if="appStore.isDark" src="@/assets/images/LogoDark.svg" class="h-8 w-auto" />
-      <img v-else src="@/assets/images/LogoLight.svg" class="h-8 w-auto" />
-    </NuxtLink>
+  <n-el class="h-16 w-full flex items-center justify-between p-2">
+    <div class="flex items-center h-full">
+      <NuxtLink v-if="showLogo" to="/">
+        <img v-if="appStore.isDark" src="@/assets/images/LogoDark.svg" class="h-8 w-auto" />
+        <img v-else src="@/assets/images/LogoLight.svg" class="h-8 w-auto" />
+      </NuxtLink>
+      <MenuHandle v-if="props.showMenuHandle" v-model:open="collapsed" class="ml-2" />
+    </div>
     <div class="flex items-center gap-2">
       <template v-if="showLogin && !userStore.user">
         <NButton type="primary" size="small" @click="navigateTo('/auth/login')"> Connexion </NButton>

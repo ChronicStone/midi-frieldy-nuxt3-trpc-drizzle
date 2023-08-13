@@ -15,7 +15,7 @@ watch(
   <!-- <LayoutUserSatisfaction /> -->
   <n-layout>
     <n-layout-header>
-      <AppHeader />
+      <AppHeader :collapsed="false" />
     </n-layout-header>
     <n-layout-content
       :content-style="{

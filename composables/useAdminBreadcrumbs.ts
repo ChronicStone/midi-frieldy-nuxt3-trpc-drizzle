@@ -1,4 +1,4 @@
-import { MenuItem, MenuItemGroup, MenuItemSection } from '@/types/system/navigation';
+import { MenuItem } from '@/types/system/navigation';
 import type { RouteLocation } from '#vue-router';
 
 export function useAdminBreadcrumbs() {
@@ -15,16 +15,9 @@ export function useAdminBreadcrumbs() {
     else return formatKey(value);
   }
 
-  function findBySlug(
-    slug: string,
-    items: (MenuItem | MenuItemGroup | MenuItemSection)[],
-  ): MenuItem | MenuItemGroup | MenuItemSection | undefined {
+  function findBySlug(slug: string, items: MenuItem[]): MenuItem | undefined {
     for (const item of items) {
       if ('slug' in item && item.slug === slug) return item;
-      if ('items' in item && item.items?.length) {
-        const found = findBySlug(slug, item.items);
-        if (found) return found;
-      }
     }
     return undefined;
   }
@@ -35,7 +28,7 @@ export function useAdminBreadcrumbs() {
     if (!route.name) return [{ label: 'Home', icon: 'mdi-home' }];
     const slugs = joinWithPrecedent(route.name.toString()).filter((_, index) => index !== 0);
     return slugs.map((slug) => {
-      const menuItem = findBySlug(slug, NAV_MENU_ITEMS);
+      const menuItem = findBySlug(slug, NAV_MENU_ITEMS.admin);
       return {
         label: menuItem?.label ?? getAnonymousSlug(slug.split('-').reverse()[0]),
         ...(menuItem && { icon: menuItem.icon }),

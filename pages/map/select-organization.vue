@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { useThemeVars } from 'naive-ui';
 
-definePageMeta({
-  middleware: ['auth'],
-});
+definePageMeta({ auth: true });
 
 const userStore = useUserStore();
 const themeVars = useThemeVars();

@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     '@huntersofbook/naive-ui-nuxt',
     '@vueuse/nuxt',
     '@nuxt/image-edge',
+    '@vue-macros/nuxt',
   ],
   imports: {
     dirs: [
@@ -41,10 +42,12 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
+      title: 'Midi friendly',
       script: [{ src: 'https://code.iconify.design/1/1.0.0/iconify.min.js' }],
     },
     pageTransition: { name: 'slide-fade-reverse', mode: 'out-in' },
   },
+  css: ['@unocss/reset/tailwind.css'],
   vite: {
     plugins: [
       Components({

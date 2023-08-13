@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  middleware: ['auth', 'active-organization'],
+  auth: true,
+  middleware: ['active-organization'],
 });
 
 const userStore = useUserStore();
