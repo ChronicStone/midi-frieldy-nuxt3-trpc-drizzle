@@ -1,18 +1,62 @@
-import { MenuItem } from '@/types/system/navigation';
+import { MenuItemGroup } from '@/types/system/navigation';
 
-export const ADMIN_MENU_ITEMS: MenuItem[] = [
+export const ADMIN_MENU_ITEMS: MenuItemGroup[] = [
   {
-    label: 'Organizations',
-    icon: 'ph:shield-check-duotone',
-    slug: 'admin-organizations',
+    items: [
+      {
+        label: 'Dashboard',
+        icon: 'ph:house-line-duotone',
+        slug: 'home-admin',
+      },
+    ],
   },
   {
-    label: 'Invitations',
-    icon: 'ph:envelope-duotone',
-    slug: 'admin-invitations',
+    label: 'Business & entities',
+    items: [
+      {
+        label: 'Organizations',
+        icon: 'ph:shield-check-duotone',
+        slug: 'admin-organizations',
+      },
+      {
+        label: 'Restaurants',
+        icon: 'ph:shield-check-duotone',
+        slug: 'admin-restaurants',
+      },
+      {
+        label: 'Lunch groups',
+        icon: 'ph:shield-check-duotone',
+        slug: 'admin-lunch-groups',
+      },
+    ],
+  },
+  {
+    label: 'Users & access',
+    items: [
+      {
+        label: 'Users',
+        icon: 'ph:user-duotone',
+        slug: 'admin-users',
+      },
+      {
+        label: 'Invitations',
+        icon: 'ph:envelope-duotone',
+        slug: 'admin-invitations',
+      },
+    ],
+  },
+  {
+    label: 'Settings',
+    items: [
+      {
+        label: 'Worker tasks',
+        icon: 'ph:shield-check-duotone',
+        slug: 'admin-queue-jobs',
+      },
+    ],
   },
 ];
-export const ORGA_MENU_ITEMS: MenuItem[] = [];
+export const ORGA_MENU_ITEMS: MenuItemGroup[] = [];
 //   key: 'admin',
 //   label: 'Administration',
 //   icon: 'ph:shield-check-duotone',

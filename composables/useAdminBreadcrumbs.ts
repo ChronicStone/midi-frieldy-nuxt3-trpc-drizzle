@@ -28,7 +28,7 @@ export function useAdminBreadcrumbs() {
     if (!route.name) return [{ label: 'Home', icon: 'mdi-home' }];
     const slugs = joinWithPrecedent(route.name.toString()).filter((_, index) => index !== 0);
     return slugs.map((slug) => {
-      const menuItem = findBySlug(slug, NAV_MENU_ITEMS.admin);
+      const menuItem = findBySlug(slug, NAV_MENU_ITEMS.admin.map((item) => item.items).flat());
       return {
         label: menuItem?.label ?? getAnonymousSlug(slug.split('-').reverse()[0]),
         ...(menuItem && { icon: menuItem.icon }),

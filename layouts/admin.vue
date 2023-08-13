@@ -16,31 +16,31 @@ function openSideNav() {
 </script>
 
 <template>
-  <n-layout class="h-screen" has-sider>
+  <NLayout class="h-screen" has-sider>
     <div
       v-if="!sidebarCollapsed && isSmallDevice"
       class="absolute z-[1] bg-black/25 h-screen w-screen top-0 left-0 transition-all ease-in-out duration-150"
-    ></div>
-    <n-layout-sider
+    />
+    <NLayoutSider
       v-model:collapsed="sidebarCollapsed"
       bordered
       collapse-mode="width"
       :collapsed-width="isSmallDevice ? 0 : 80"
       :position="isSmallDevice ? 'absolute' : 'static'"
-      :width="240"
+      :width="280"
       :native-scrollbar="false"
       :content-style="{ zIndex: '100 !important' }"
     >
-      <side-navigation v-model:collapsed="sidebarCollapsed" />
-    </n-layout-sider>
-    <n-layout-header class="h-16 p-0" bordered>
+      <SideNavigation v-model:collapsed="sidebarCollapsed" />
+    </NLayoutSider>
+    <NLayoutHeader class="h-16 p-0" bordered>
       <AppHeader v-model:collapsed="sidebarCollapsed" show-menu-handle :show-logo="false" />
-    </n-layout-header>
-    <n-layout
+    </NLayoutHeader>
+    <NLayout
       position="absolute"
-      :style="{ top: '4rem', left: !sidebarCollapsed ? '240px' : isSmallDevice ? '0px' : '80px' }"
+      :style="{ top: '4rem', left: isSmallDevice ? '0px' : sidebarCollapsed ? '80px' : '280px' }"
     >
-      <n-layout content-style="padding: 24px;" :native-scrollbar="false">
+      <NLayout content-style="padding: 24px;" :native-scrollbar="false">
         <div class="flex flex-col gap-4">
           <!-- <n-breadcrumb>
             <n-breadcrumb-item
@@ -58,7 +58,7 @@ function openSideNav() {
           </n-breadcrumb> -->
           <slot />
         </div>
-      </n-layout>
-    </n-layout>
-  </n-layout>
+      </NLayout>
+    </NLayout>
+  </NLayout>
 </template>
