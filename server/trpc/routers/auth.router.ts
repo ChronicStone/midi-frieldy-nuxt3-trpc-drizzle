@@ -9,7 +9,7 @@ import { omit } from '@/utils/data/object';
 import { getUserFromCredentials } from '@/server/services/user.service';
 
 export const authRouter = router({
-  login: publicProcedure.input(authLoginDto).mutation(async ({ input }) => {
+  login: publicProcedure.input(authLoginDto).mutation(async ({ input, ctx }) => {
     const user = await getUserFromCredentials(input);
     if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
 

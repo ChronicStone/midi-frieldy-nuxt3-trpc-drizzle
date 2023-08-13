@@ -3,5 +3,7 @@ import { DataTable } from '@chronicstone/vue-sweettools';
 </script>
 
 <template>
-  <DataTable v-bind="organizationTableSchema()">Organizations</DataTable>
+  <div>
+    <DataTable v-bind="organizationTableSchema()">Organizations</DataTable>
+  </div>
 </template>

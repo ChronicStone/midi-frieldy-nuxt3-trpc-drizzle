@@ -34,3 +34,12 @@ export const authRegisterDto = z.intersection(
 );
 
 export const authLinkDto = authLoginDto;
+
+export const authTokenPayloadDto = z.object({
+  _id: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.string().email(),
+  exp: z.number(),
+  iat: z.number(),
+});
