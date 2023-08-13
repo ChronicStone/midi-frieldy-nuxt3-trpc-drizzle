@@ -60,29 +60,5 @@ export default defineNuxtConfig({
     ],
   },
 
-  unocss: {
-    wind: true,
-    icons: true,
-    transformers: [
-      // @ts-expect-error weird ts infer issue
-      transformerVariantGroup(),
-      // @ts-expect-error weird ts infer issue
-      transformerDirectives({
-        applyVariable: ['--at-apply', '--uno-apply', '--uno'],
-      }),
-    ],
-    webFonts: {
-      provider: 'google',
-      fonts: {
-        lato: 'Lato',
-      },
-    },
-    theme: {
-      colors: {
-        primary: '#F18669',
-      },
-    },
-    rules: [['h-layout', { height: 'calc(100vh - 4rem)' }]],
-  },
   plugins: [],
 });
