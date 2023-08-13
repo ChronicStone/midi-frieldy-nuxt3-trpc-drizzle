@@ -1,6 +1,7 @@
 import { addMetadata, defer } from '@defer/client';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db';
+import { queueJobsTable } from '@/db/schema';
 import { getRestaurantsNearby } from '@/server/services/googleMaps.service';
 import { createOrganizationRestaurants } from '@/server/services/restaurant.service';
 import {
@@ -16,11 +17,14 @@ export async function resolveOrganizationRestaurants(organizationId: string, job
       operation: 'resolveRestaurant',
       params: { organizationId },
     }).then((job) => job._id));
-  const handler = addMetadata(organizationQueue, { organizationId, jobId: _jobId });
-  return handler(_jobId);
+  const handler = addMetadata(googleMapsQueue, { organizationId, jobId: _jobId });
+  const jobRef = await handler(_jobId);
+
+  db.update(queueJobsTable).set({ deferJobId: jobRef.id });
+  return jobRef.id;
 }
 
-const organizationQueue = defer(async (jobId: string) => {
+const googleMapsQueue = defer(async (jobId: string) => {
   const job = await db.query.queueJobsTable.findFirst({
     where: (t) => eq(t._id, jobId),
   });
