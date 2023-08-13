@@ -1,6 +1,12 @@
-import { MenuItem } from '@/types/system/navigation';
+import { MenuItemGroup } from '@/types/system/navigation';
 
-export function mapNavigationItems(navItems: MenuItem[]) {
+export function mapNavigationItems(navItemsGroups: MenuItemGroup[]) {
   const userStore = useUserStore();
-  return navItems.filter((item) => item).filter((item) => item?.condition?.(userStore) ?? true);
+  return navItemsGroups
+    .map((item) => ({
+      label: item.label,
+      items: item.items.filter((item) => item).filter((item) => item?.condition?.(userStore) ?? true),
+      expanded: ref<boolean>(true),
+    }))
+    .filter((group) => group.items.length);
 }

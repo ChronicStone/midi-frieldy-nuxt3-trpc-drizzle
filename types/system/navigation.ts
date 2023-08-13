@@ -6,3 +6,8 @@ export type MenuItem = {
   slug: RouteLocationNormalized['name'];
   condition?: (userStore: ReturnType<typeof useUserStore>) => boolean;
 };
+
+export type MenuItemGroup = {
+  label?: string;
+  items: MenuItem[];
+};

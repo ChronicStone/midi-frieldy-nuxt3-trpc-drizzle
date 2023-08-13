@@ -4,6 +4,7 @@ const props = withDefaults(
   defineProps<{
     showLogo?: boolean;
     showMenuHandle?: boolean;
+    showAppAccess?: boolean;
   }>(),
   { showLogo: true },
 );
@@ -30,7 +31,7 @@ const showLogin = computed(() => {
         <NButton type="primary" size="small" @click="navigateTo('/auth/login')"> Connexion </NButton>
         <NDivider vertical class="!m-0" />
       </template>
-      <template v-if="showLogin && userStore.user">
+      <template v-if="(showLogin || showAppAccess) && userStore.user">
         <NButton type="primary" size="small" @click="navigateTo('/map')"> Ouvrir l'app </NButton>
         <NDivider vertical class="!m-0" />
       </template>
