@@ -133,8 +133,8 @@ export const restaurantsTable = pgTable('restaurants', {
   organizationId: uuid('organizationId')
     .notNull()
     .references(() => organizationsTable._id),
-  address: json('address').$type<Address>(),
-  coordinates: json('coordinates').$type<Coordinates>(),
+  address: json('address').$type<Address>().notNull(),
+  coordinates: json('coordinates').$type<Coordinates>().notNull(),
   priceLevel: integer('priceLevel'),
   openingHours: json('openingHours').$type<string[]>(),
   website: varchar('website'),
@@ -304,6 +304,7 @@ export const lunchGroupPollsTableRelations = relations(lunchGroupPollsTable, ({ 
     references: [lunchGroupsTable._id],
   }),
   restaurants: many(lunchGroupPollsRestaurantsTable),
+  pollEntries: many(lunchGroupPollEntriesTable),
 }));
 
 export const lunchGroupPollsRestaurantsTable = pgTable('lunch_group_polls_restaurants', {
@@ -366,10 +367,11 @@ export const queueJobsTable = pgTable('queue_jobs', {
   _id: uuid('id').primaryKey().defaultRandom(),
   queue: varchar('queue').notNull().$type<'map' | 'email'>(),
   params: json('params').$type<z.infer<typeof queueJobParamsSchema>>().notNull(),
-  result: json('result').$type<z.infer<typeof queueJobResultSchema>>(),
+  result: json('result').$type<z.infer<typeof queueJobResultSchema>[]>().default([]).notNull(),
   status: varchar('status', { length: 20 })
     .notNull()
     .$type<'pending' | 'processing' | 'completed' | 'failed'>()
     .default('pending'),
   attempts: integer('attempts').notNull().default(0),
+  deferJobId: varchar('defer_job_id').notNull().default(''),
 });

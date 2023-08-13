@@ -40,7 +40,7 @@ export async function completeQueueJob(job: QueueJob, result: QueueJobResult) {
     .set({
       status: result.success ? 'completed' : 'failed',
       attempts: job.attempts + 1,
-      result,
+      result: [...(job?.result ?? []), result],
     })
     .where(eq(queueJobsTable._id, job._id));
 
