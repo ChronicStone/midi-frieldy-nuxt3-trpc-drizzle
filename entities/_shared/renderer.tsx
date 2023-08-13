@@ -5,7 +5,7 @@ export function renderBoolean(value: boolean, mode: 'tag' | 'icon' = 'icon') {
     return (
       <span
         class={`iconify ${value ? 'text-green-500' : 'text-red-500'}`}
-        data-icon={value ? 'mdi:check' : 'mdi:close'}
+        data-icon={value ? 'mdi:check-circle-outline' : 'mdi:close-circle-outline'}
       />
     );
   else

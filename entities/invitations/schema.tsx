@@ -12,6 +12,7 @@ export function invitationsTableSchema() {
       { label: 'Organization', key: 'organization.name', render: formatNullableText },
       { label: 'Emails (email type)', key: 'emails', render: renderInvitationEmailList },
       { label: 'Max usage (link type)', key: 'maxUsage' },
+      { label: 'Usage progress', key: 'usages', render: renderInvitationUsage },
       { label: 'Created at', key: 'createdAt', render: formatDate },
       { label: 'Expire at', key: 'expireAt', render: formatDate },
     ],
