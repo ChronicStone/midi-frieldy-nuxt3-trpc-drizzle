@@ -15,17 +15,17 @@ export const ADMIN_MENU_ITEMS: MenuItemGroup[] = [
     items: [
       {
         label: 'Organizations',
-        icon: 'ph:shield-check-duotone',
+        icon: 'ph:buildings-duotone',
         slug: 'admin-organizations',
       },
       {
         label: 'Restaurants',
-        icon: 'ph:shield-check-duotone',
+        icon: 'ph:bowl-food-duotone',
         slug: 'admin-restaurants',
       },
       {
         label: 'Lunch groups',
-        icon: 'ph:shield-check-duotone',
+        icon: 'ph:users-three-duotone',
         slug: 'admin-lunch-groups',
       },
     ],
@@ -49,8 +49,8 @@ export const ADMIN_MENU_ITEMS: MenuItemGroup[] = [
     label: 'Settings',
     items: [
       {
-        label: 'Worker tasks',
-        icon: 'ph:shield-check-duotone',
+        label: 'Queue jobs',
+        icon: 'ph:clock-clockwise-duotone',
         slug: 'admin-queue-jobs',
       },
     ],
