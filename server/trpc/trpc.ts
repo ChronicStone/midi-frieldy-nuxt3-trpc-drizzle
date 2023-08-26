@@ -5,6 +5,7 @@ import { appRouter } from './router';
 
 export type RouterMeta = {
   auth?: boolean;
+  requireOrg?: boolean;
   access?: Array<'admin' | 'organization-admin' | 'client'>;
 };
 

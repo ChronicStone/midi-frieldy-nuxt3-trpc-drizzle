@@ -1,4 +1,3 @@
-/* eslint-disable import/default */
 /* eslint-disable import/no-named-as-default-member */
 import { TRPCError, inferAsyncReturnType } from '@trpc/server';
 import { type H3Event, getHeader } from 'h3';
@@ -14,9 +13,9 @@ import { authTokenPayloadDto } from '@/server/dto/auth.dto';
  * Creates context for an incoming request
  * @link https://trpc.io/docs/context
  */
-export const createContext = async (_event: H3Event) => {
+export const createContext = async (_event: any) => {
   const authToken = (getHeader(_event, 'authorization') ?? '').split(' ')[1];
-  // const organizationId = getHeader(_event, "organizationId");
+  const organizationId = getHeader(_event, 'organizationId');
 
   const valid = authToken ? jwt.verify(authToken, env.JWT_SECRET_KEY) : true;
   if (!valid) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid jwt token' });
@@ -28,9 +27,16 @@ export const createContext = async (_event: H3Event) => {
       })
     : null;
 
+  const organization = organizationId
+    ? await db.query.organizationsTable.findFirst({
+        where: (organization) => eq(organization._id, organizationId),
+      })
+    : null;
+
   return {
     db,
     user,
+    organization,
   };
 };
 
