@@ -13,7 +13,16 @@ export default defineNuxtConfig({
   experimental: { typedPages: true },
   build: { transpile: ['trpc-nuxt'] },
   alias: { '@/.': './' },
-  typescript: { typeCheck: process.env.NODE_ENV !== 'production' },
+  typescript: { typeCheck: process.env.NODE_ENV !== 'production' && false },
+  nitro: {
+    plugins: ['@/nitro/ws'],
+    storage: {
+      db: {
+        driver: 'fs',
+        base: './data/db',
+      },
+    },
+  },
   modules: [
     '@unocss/nuxt',
     '@pinia/nuxt',
