@@ -6,7 +6,7 @@ const props = withDefaults(
   defineProps<{
     zoom?: number;
     orgaCoordinates: { latitude: number; longitude: number };
-    boundaries: { latitude: number; longitude: number };
+    boundaries?: { latitude: number; longitude: number };
   }>(),
   {
     zoom: 17,
@@ -55,8 +55,7 @@ const mapStylesConfig = computed(() => [
 </script>
 
 <template>
-  <NSpin :show="false">
-    <!-- mapGatewayApi?.isRestaurantLoading.value ?? true -->
+  <NSpin :show="mapGatewayApi?.isRestaurantsLoading.value ?? true">
     <template #description> Chargement des restaurants... </template>
     <GoogleMap
       :api-key="GApiKey"
@@ -72,13 +71,14 @@ const mapStylesConfig = computed(() => [
       disable-default-ui
     >
       <OrganizationMarker :position="orgaCoordinates" />
-      <!-- <MapMarkerRestaurant
+
+      <RestaurantMarker
         v-for="(restaurant, index) in mapGatewayApi.restaurants.value"
         :key="restaurant._id"
-        :restaurant="restaurant"
+        :restaurant-id="restaurant._id"
         :index="index"
       />
-      <MapSideControls /> -->
+      <SideControls />
     </GoogleMap>
   </NSpin>
 </template>
