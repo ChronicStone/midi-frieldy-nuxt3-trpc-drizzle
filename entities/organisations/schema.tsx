@@ -37,36 +37,46 @@ export function organizationFormSchema(mode: 'create' | 'update' = 'create') {
     fields: [
       { label: 'Name', key: 'name', type: 'text', required: true },
       {
+        size: 8,
+        key: 'divider',
+        type: 'info',
+        content: () => (
+          <div>
+            <NDivider />
+            <span class="font-bold text-lg">Address</span>
+          </div>
+        ),
+      },
+      {
         label: 'Address',
         key: 'address',
         type: 'object',
-        fieldParams: {
-          frameless: true,
-        },
+        collapsible: false,
+        fieldParams: { frameless: true },
         fields: [
           {
-            label: 'Address - Street',
+            label: 'Street',
             key: 'street',
             type: 'text',
             required: true,
             size: '8 md:4',
           },
           {
-            label: 'Address - City',
+            label: 'City',
             key: 'city',
             type: 'text',
             required: true,
             size: '8 md:4',
           },
           {
-            label: 'Address - ZIP Code',
+            label: 'ZIP Code',
             key: 'zip',
             type: 'text',
             required: true,
             size: '8 md:4',
           },
           {
-            label: 'Address - Country',
+            label: 'Country',
             key: 'country',
             type: 'text',
             required: true,

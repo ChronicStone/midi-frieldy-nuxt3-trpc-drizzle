@@ -4,7 +4,7 @@ import { RestaurantList } from '@/types/restaurant';
 export function restaurantTableSchema(organizationId?: string) {
   const { $client } = useNuxtApp();
   return buildTableSchema<RestaurantList[number]>({
-    remote: true,
+    remote: false,
     searchQuery: [
       'name',
       'organization.name',
