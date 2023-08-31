@@ -1,4 +1,4 @@
 export default defineNuxtRouteMiddleware((to, from) => {
   const userStore = useUserStore();
-  if (userStore.user) return navigateTo('/');
+  if (userStore.user) return navigateTo('/auth/portal');
 });
