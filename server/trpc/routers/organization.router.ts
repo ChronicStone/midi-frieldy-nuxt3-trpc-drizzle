@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server';
-import { getCoordinatesFromAddress } from '@/server/services/googleMaps.service';
+import { getCoordinatesFromAddress } from '@/server/services/external/googleMaps.service';
 import { router, protectedProcedure } from '@/server/trpc/trpc';
 import { createOrganizationDto } from '@/server/dto/organization.dto';
 import { organizationsTable } from '@/db/schema';
@@ -8,6 +8,7 @@ import { resolveOrganizationRestaurants } from '@/server/defer/queue/maps.queue'
 export const organizationRouter = router({
   getOrganizations: protectedProcedure.query(({ ctx }) => {
     return ctx.db.query.organizationsTable.findMany({
+      orderBy: (t) => t.createdAt,
       with: {},
     });
   }),
