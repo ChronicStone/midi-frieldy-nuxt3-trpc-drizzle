@@ -2,7 +2,7 @@
 import { useThemeVars } from 'naive-ui';
 import { CustomMarker } from 'vue3-google-map';
 
-defineProps<{
+const props = defineProps<{
   position: { latitude: number; longitude: number };
 }>();
 
