@@ -2,6 +2,7 @@ import { off } from 'process';
 import { and, eq } from 'drizzle-orm';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { consola } from 'consola';
 import { omit } from '@/utils/data/object';
 import { usersTable, userCredentialsTable, userOrganizationsTable } from '@/db/schema';
 import { db } from '@/db';
@@ -43,10 +44,11 @@ export async function registerUser(payload: z.infer<typeof authRegisterDto>) {
 }
 
 export async function getUserFromCredentials(input: z.infer<typeof authLoginDto>) {
+  consola.info('Getting user from credentials', input);
   const credentials = await db.query.userCredentialsTable.findFirst({
     where: (t) =>
       input.type === 'email'
-        ? and(eq(t.type, input.type), eq(t.email, input.email), eq(t.password, input.password))
+        ? and(eq(t.type, input.type), eq(t.email, input.email))
         : and(eq(t.type, input.type), eq(t.email, input.email), eq(t.userId, input.userId)),
     with: {
       user: {
@@ -58,6 +60,7 @@ export async function getUserFromCredentials(input: z.infer<typeof authLoginDto>
       },
     },
   });
+  consola.log('User credentials', credentials);
 
   if (!credentials) return null;
   if (input.type === 'email' && !comparePassword(input.password, credentials.password!)) return null;

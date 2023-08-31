@@ -37,6 +37,7 @@ export const createContext = async (_event: any) => {
     db,
     user,
     organization,
+    wsClientId: null as string | null,
   };
 };
 
