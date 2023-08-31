@@ -19,7 +19,7 @@ export const formatDateTime = (val: string | number) => dayjs(val).format('MMM D
 export const formatDateToTimestamp = (val: string) => dayjs(val).valueOf();
 export const formatDateToISOstring = (val: string) => dayjs(val).toISOString().toString().replaceAll('Z', '');
 export const formatTime = (val: string | number) => dayjs.duration(+val * 1000).format('mm:ss');
-export const formatTimeFromTimestamp = (val: string | number) => dayjs(val).format('h:mm A');
+export const formatTimeFromTimestamp = (val: string | number) => dayjs(val).format('HH:mm');
 export const formatProctoringMode = (val: 'online' | 'onsite' | 'general') =>
   val === 'general' ? 'Standard proctoring' : val === 'online' ? 'Online proctoring' : 'Onsite proctoring';
 export const trim = (val: number | string, decimals = 2) => (+val).toFixed(decimals);
