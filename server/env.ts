@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 export const env = createEnv({
   server: {
+    APP_ENV: z.enum(['local', 'production']),
     DATABASE_URL: z.string().url(),
     DATABASE_SOURCE: z.enum(['neon', 'local']),
     JWT_SECRET_KEY: z.string(),
