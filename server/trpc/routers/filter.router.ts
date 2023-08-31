@@ -13,4 +13,19 @@ export const filteOptionsRouter = router({
         })),
       );
   }),
+  getRestaurants: publicProcedure.query(({ ctx }) => {
+    return ctx.db.query.restaurantsTable
+      .findMany({
+        ...(!!ctx.organization && {
+          where: (t, { eq }) => eq(t.organizationId, ctx.organization!._id),
+        }),
+        columns: { _id: true, name: true, organizationId: true },
+      })
+      .then((restaurants) => {
+        return restaurants.map((restaurant) => ({
+          label: restaurant.name,
+          value: restaurant._id,
+        }));
+      });
+  }),
 });
