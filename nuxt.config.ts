@@ -13,9 +13,12 @@ export default defineNuxtConfig({
   experimental: { typedPages: true },
   build: { transpile: ['trpc-nuxt'] },
   alias: { '@/.': './' },
-  typescript: { typeCheck: process.env.NODE_ENV !== 'production' && false },
+  typescript: { typeCheck: process.env.APP_ENV !== 'production' && false },
   nitro: {
-    plugins: ['@/nitro/ws'],
+    imports: {
+      dirs: ['@/db', '@/utils/server', '@/db/schema'],
+    },
+    plugins: ['@/nitro/ws', '@/nitro/scheduler'],
     storage: {
       db: {
         driver: 'fs',
@@ -30,6 +33,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxt/image-edge',
     '@vue-macros/nuxt',
+    'nuxt-scheduler',
   ],
   imports: {
     dirs: [
