@@ -18,7 +18,9 @@ async function authenticate(data: AuthLoginDto) {
     appStore.stopLoading();
     userStore.storeAuthData(authData);
     messageApi.success(`Bienvenue, ${authData.user.firstName} ${authData.user.lastName}`);
-    navigateTo('/map');
+    await nextTick();
+    await sleep(200);
+    navigateTo('/auth/portal');
   } catch (err) {
     appStore.stopLoading();
     if (err instanceof TRPCClientError) {

@@ -1,5 +1,9 @@
+<script setup lang="ts">
+import { DataTable } from '@chronicstone/vue-sweettools';
+</script>
+
 <template>
   <div>
-    <h1>Admin</h1>
+    <DataTable v-bind="restaurantTableSchema()">Restaurants</DataTable>
   </div>
 </template>

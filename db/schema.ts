@@ -6,7 +6,7 @@ import { Address, Coordinates } from '@/types/system/location';
 import { queueJobParamsSchema, queueJobResultSchema } from '@/server/dto/queueJob.dto';
 
 export const usersTable = pgTable('users', {
-  _id: uuid('id').defaultRandom().primaryKey(),
+  _id: uuid('id').defaultRandom().primaryKey().notNull(),
   onboarded: boolean('onboarded').default(false).notNull(),
   firstName: varchar('firstName').notNull(),
   lastName: varchar('lastName').notNull(),
@@ -220,7 +220,7 @@ export const lunchGroupsTable = pgTable('lunch_groups', {
   label: varchar('label').notNull(),
   description: varchar('description'),
   status: varchar('status', { length: 20 }).notNull().$type<'open' | 'closed'>(),
-  meetingTime: varchar('meetingTime'),
+  meetingTime: varchar('meetingTime').notNull(),
   userSlots: integer('userSlots'),
   restaurantId: uuid('restaurantId')
     .notNull()
@@ -229,6 +229,9 @@ export const lunchGroupsTable = pgTable('lunch_groups', {
   ownerId: uuid('ownerId')
     .notNull()
     .references(() => usersTable._id),
+  chatRoomId: uuid('chatRoomId')
+    .references(() => chatRoomsTable._id)
+    .notNull(),
   createdAt: timestamp('createdAt', { mode: 'string' }).notNull().defaultNow(),
   updatedAt: timestamp('updatedAt', { mode: 'string' }).notNull().defaultNow(),
 });
@@ -247,6 +250,10 @@ export const lunchGroupsTableRelations = relations(lunchGroupsTable, ({ one, man
     references: [usersTable._id],
   }),
   users: many(lunchGroupUsersTable),
+  chatRoom: one(chatRoomsTable, {
+    fields: [lunchGroupsTable.chatRoomId],
+    references: [chatRoomsTable._id],
+  }),
 }));
 
 export const lunchGroupUsersTable = pgTable('lunch_group_users', {
@@ -278,7 +285,7 @@ export const lunchGroupPollsTable = pgTable('lunch_group_polls', {
   description: varchar('description'),
   status: varchar('status', { length: 20 }).notNull().$type<'open' | 'closed'>(),
   voteDeadline: timestamp('voteDeadline', { mode: 'string' }).notNull(),
-  meetingTime: varchar('meetingTime'),
+  meetingTime: varchar('meetingTime').notNull(),
   organizationId: uuid('organizationId')
     .notNull()
     .references(() => organizationsTable._id),
@@ -286,6 +293,9 @@ export const lunchGroupPollsTable = pgTable('lunch_group_polls', {
     .notNull()
     .references(() => usersTable._id),
   lunchGroupId: uuid('lunchGroupId').references(() => lunchGroupsTable._id),
+  chatRoomId: uuid('chatRoomId')
+    .references(() => chatRoomsTable._id)
+    .notNull(),
   createdAt: timestamp('createdAt', { mode: 'string' }).notNull().defaultNow(),
   updatedAt: timestamp('updatedAt', { mode: 'string' }).notNull().defaultNow(),
 });
@@ -305,6 +315,10 @@ export const lunchGroupPollsTableRelations = relations(lunchGroupPollsTable, ({ 
   }),
   restaurants: many(lunchGroupPollsRestaurantsTable),
   pollEntries: many(lunchGroupPollEntriesTable),
+  chatRoom: one(chatRoomsTable, {
+    fields: [lunchGroupPollsTable.chatRoomId],
+    references: [chatRoomsTable._id],
+  }),
 }));
 
 export const lunchGroupPollsRestaurantsTable = pgTable('lunch_group_polls_restaurants', {
@@ -375,3 +389,65 @@ export const queueJobsTable = pgTable('queue_jobs', {
   attempts: integer('attempts').notNull().default(0),
   deferJobId: varchar('defer_job_id').notNull().default(''),
 });
+
+export const chatRoomsTable = pgTable('chat_rooms', {
+  _id: uuid('id').primaryKey().defaultRandom(),
+});
+
+export const chatRoomsTableRelations = relations(chatRoomsTable, ({ one, many }) => ({
+  lunchGroup: one(lunchGroupsTable, {
+    fields: [chatRoomsTable._id],
+    references: [lunchGroupsTable.chatRoomId],
+  }),
+  lunchGroupPoll: one(lunchGroupPollsTable, {
+    fields: [chatRoomsTable._id],
+    references: [lunchGroupPollsTable.chatRoomId],
+  }),
+  users: many(chatRoomUsersTable),
+  messages: many(chatRoomMessagesTable),
+}));
+
+export const chatRoomUsersTable = pgTable('chat_room_users', {
+  _id: uuid('id').primaryKey().defaultRandom(),
+  chatRoomId: uuid('chatRoomId')
+    .notNull()
+    .references(() => chatRoomsTable._id),
+  userId: uuid('userId')
+    .notNull()
+    .references(() => usersTable._id),
+});
+
+export const chatRoomUsersTableRelations = relations(chatRoomUsersTable, ({ one }) => ({
+  room: one(chatRoomsTable, {
+    fields: [chatRoomUsersTable.chatRoomId],
+    references: [chatRoomsTable._id],
+  }),
+  user: one(usersTable, {
+    fields: [chatRoomUsersTable.userId],
+    references: [usersTable._id],
+  }),
+}));
+
+export const chatRoomMessagesTable = pgTable('chat_room_messages', {
+  _id: uuid('id').primaryKey().defaultRandom(),
+  chatRoomId: uuid('chatRoomId')
+    .notNull()
+    .references(() => chatRoomsTable._id),
+  userId: uuid('userId')
+    .notNull()
+    .references(() => usersTable._id),
+  messageType: varchar('messageType', { length: 20 }).notNull().$type<'text' | 'image'>(),
+  messageText: varchar('message').notNull().default(''),
+  createdAt: timestamp('createdAt', { mode: 'string' }).notNull().defaultNow(),
+});
+
+export const chatRoomMessagesTableRelations = relations(chatRoomMessagesTable, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [chatRoomMessagesTable.userId],
+    references: [usersTable._id],
+  }),
+  room: one(chatRoomsTable, {
+    fields: [chatRoomMessagesTable.chatRoomId],
+    references: [chatRoomsTable._id],
+  }),
+}));

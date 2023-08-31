@@ -1,0 +1,1 @@
+ALTER TABLE "lunch_groups" ALTER COLUMN "meetingTime" SET NOT NULL;
