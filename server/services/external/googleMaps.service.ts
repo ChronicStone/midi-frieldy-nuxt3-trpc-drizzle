@@ -28,6 +28,8 @@ export async function getCoordinatesFromAddress(address: Address) {
       longitude: coordinates.lng,
     };
   } catch (error) {
+    consola.error('Unable to resolve coordinates');
+    consola.error(error);
     throw new Error('Error getting coordinates from address', { cause: error });
   }
 }

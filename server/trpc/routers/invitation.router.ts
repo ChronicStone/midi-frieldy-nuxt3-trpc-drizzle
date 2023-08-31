@@ -5,6 +5,7 @@ import {
   acceptInvitationDto,
   createInvitationLinkDto,
   validateInvitationDto,
+  inviteUsersByEmailDto,
 } from '@/server/dto/invitation.dto';
 import { comparePassword } from '@/utils/server/bcrypt';
 import { getUserFromCredentials, registerUser, addUserToOrganization } from '@/server/services/user.service';
@@ -14,11 +15,17 @@ import {
   getInvitationData,
 } from '@/server/services/invitation.service';
 import { env } from '@/server/env';
+import { queueInvitationEmails } from '@/server/defer/queue/mailer.queue';
 
 export const invitationRouter = router({
   createInvitationLink: protectedProcedure.input(createInvitationLinkDto).mutation(async ({ input, ctx }) => {
     const invitation = await createInvitation(input);
     return `${env.CLIENT_APP_URL}/auth/invitation/${invitation._id}`;
+  }),
+  createEmailInvitation: protectedProcedure.input(inviteUsersByEmailDto).mutation(async ({ input, ctx }) => {
+    const invitation = await createInvitation(input);
+    await queueInvitationEmails(invitation._id);
+    return invitation;
   }),
   validateInvitation: publicProcedure.input(validateInvitationDto).query(async ({ input, ctx }) => {
     const invitation = await getInvitationData(input);
