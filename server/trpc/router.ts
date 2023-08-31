@@ -7,6 +7,8 @@ import { organizationRouter } from './routers/organization.router';
 import { restaurantRouter } from './routers/restaurant.router';
 import { queueJobRouter } from './routers/queueJob.router';
 import { lunchGroupRouter } from './routers/lunchGroup.router';
+import { userRouter } from './routers/user.router';
+import { chatRouter } from './routers/chat.router';
 
 export const appRouter = router({
   auth: authRouter,
@@ -16,6 +18,8 @@ export const appRouter = router({
   restaurant: restaurantRouter,
   lunchGroup: lunchGroupRouter,
   queueJob: queueJobRouter,
+  chat: chatRouter,
+  user: userRouter,
 });
 
 // export type definition of API
